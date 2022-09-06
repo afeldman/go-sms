@@ -1,4 +1,4 @@
-module contoll_gsm_golang
+module github.com/afeldman/go-sms
 
 go 1.18
 
