@@ -37,6 +37,8 @@ func ModemList() ([]GSMADBModem, error) {
 		return dev, errors.New("no device available")
 	}
 
+	log.Println(devices)
+
 	for _, device := range devices {
 
 		version, version_error := adbversion(device)
