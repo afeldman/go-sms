@@ -18,6 +18,10 @@ type GSM interface {
 }
 
 func SendSMS(number, message string) string {
+
+	log.Println(number)
+	log.Println(message)
+
 	for _, device := range GSMModem {
 		switch v := device.(type) {
 		case GSMADBModem:
