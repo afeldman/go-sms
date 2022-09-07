@@ -3,6 +3,7 @@ module github.com/afeldman/go-sms
 go 1.18
 
 require (
+	github.com/gin-gonic/gin v1.8.1
 	github.com/spf13/viper v1.13.0
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
 )
@@ -10,7 +11,6 @@ require (
 require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.8.1 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.0 // indirect

@@ -1,6 +1,7 @@
 package smsroutes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/afeldman/go-sms/modem"
@@ -28,6 +29,8 @@ func SMSHandler(c *gin.Context) {
 		response.message = err.Error()
 		c.JSON(http.StatusBadGateway, response)
 	}
+
+	log.Println(SMS)
 
 	response.message = modem.SendSMS(SMS.mobile, SMS.message)
 	response.number = SMS.mobile

@@ -32,5 +32,4 @@ func main() {
 	router.NoRoute(smsroutes.NoHandler)
 
 	router.Run(smsconfig.SMSConfiguration.ServerAddress + ":" + smsconfig.SMSConfiguration.ServerPort)
-
 }
