@@ -14,15 +14,11 @@ const (
 	ADB
 )
 
-type SMSADBDevice struct {
-	DeviceType ModemType
-}
-
-type SMSSerialDevice struct {
-	DeviceType ModemType
-	COMPort    string
-	Baudrate   int
-	DeviceId   string
+type SMSDevice struct {
+	DeviceType ModemType `toml:"type"`
+	COMPort    string    `toml:"com" omitempty:"true"`
+	Baudrate   int       `toml:"baud" omitempty:"true"`
+	DeviceId   string    `toml:"id" omitempty:"true"`
 }
 
 type SMSConfig struct {
@@ -33,7 +29,7 @@ type SMSConfig struct {
 	BufferLow      int
 	MSGTimeOut     int
 	MSGTimeOutLong int
-	Devices        []interface{}
+	Devices        []SMSDevice
 }
 
 var SMSConfiguration *SMSConfig = &SMSConfig{
@@ -58,10 +54,6 @@ func LoadConfig(workingdir string) {
 	if err := viper.Unmarshal(SMSConfiguration); err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Printf("%#v\n", SMSConfiguration)
-
-	for _, device := range SMSConfiguration.Devices {
-		fmt.Println(device)
-	}
-
 }
