@@ -1,5 +1,12 @@
 package smsconfig
 
+import (
+	"fmt"
+	"log"
+
+	"github.com/spf13/viper"
+)
+
 type ModemType int
 
 const (
@@ -37,4 +44,20 @@ var SMSConfiguration *SMSConfig = &SMSConfig{
 	MSGTimeOut:     10,
 	MSGTimeOutLong: 20,
 	Devices:        nil,
+}
+
+func LoadConfig(workingdir string) {
+	viper.SetConfigFile(workingdir + "/config/smsconfig.toml")
+	viper.SetConfigType("toml")
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatal(err)
+	}
+
+	var cfg SMSConfig
+	if err := viper.Unmarshal(&cfg); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%#v\n", cfg)
+
 }
