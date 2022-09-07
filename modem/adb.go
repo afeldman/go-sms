@@ -169,6 +169,8 @@ func adbversion(deviceid string) (int, error) {
 		return -1, err
 	}
 
+	log.Println(version)
+
 	return version, nil
 }
 
