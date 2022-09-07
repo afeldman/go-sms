@@ -1,6 +1,7 @@
 package smsroutes
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -9,31 +10,36 @@ import (
 )
 
 type sms struct {
-	mobile  string `json:"no"`
-	message string `json:"msg"`
+	Mobile  string `json:"no"`
+	Message string `json:"msg"`
 }
 
 type sms_response struct {
-	number  string `json:"no"`
-	message string `json:"msg"`
+	Number  string `json:"no"`
+	Message string `json:"msg"`
 }
 
 func SMSHandler(c *gin.Context) {
-	var SMS sms
+	sms_request := sms{}
 
 	response := sms_response{
-		number:  "404",
-		message: ""}
+		Number:  "404",
+		Message: ""}
 
-	if err := c.BindJSON(&SMS); err != nil {
-		response.message = err.Error()
+	err := c.BindJSON(&sms_request)
+	if err != nil {
+		response.Message = err.Error()
+		log.Println(response)
 		c.JSON(http.StatusBadGateway, response)
+		return
 	}
 
-	log.Println(SMS)
+	log.Println(fmt.Sprintf("sms: %+v", sms_request))
 
-	response.message = modem.SendSMS(SMS.mobile, SMS.message)
-	response.number = SMS.mobile
+	response.Message = modem.SendSMS(sms_request.Mobile, sms_request.Message)
+	response.Number = sms_request.Mobile
+
+	log.Println(response)
 
 	c.JSON(200, response)
 }
