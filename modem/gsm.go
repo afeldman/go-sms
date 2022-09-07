@@ -1,12 +1,4 @@
-package gsm
-
-const (
-	NEWLINE              = "\r\n"
-	ECHOOFF              = "ATE0" + NEWLINE
-	USEFULLERRORMESSAGES = "AT+CMEE=1" + NEWLINE
-	DISABLENOTIFICATIONS = "AT+WIND=0" + NEWLINE
-	ENABLETEXTMODE       = "AT+CMGF=1" + NEWLINE
-)
+package modem
 
 type GSM interface {
 	Connect() error
