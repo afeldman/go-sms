@@ -20,13 +20,17 @@ func main() {
 
 	fmt.Println(smsconfig.SMSConfiguration.ServerPort)
 
+	fmt.Println(len(modem.GSMModem))
+
 	for _, device := range modem.GSMModem {
 		switch v := device.(type) {
 		case modem.GSMADBModem:
 			fmt.Println("ADB device")
-
+			fmt.Println(v.DeviceId)
+			fmt.Println(v.AndroidVersion)
 		case modem.GSMSerialModem:
 			fmt.Println("Serial device")
+			fmt.Println(v.DeviceId)
 		default:
 			panic("modem type not found")
 		}

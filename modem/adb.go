@@ -22,7 +22,7 @@ type GSMADBModem struct {
 }
 
 func ModemList() ([]GSMADBModem, error) {
-	dev := make([]GSMADBModem, 0)
+	var dev []GSMADBModem
 
 	log.Println("create modem list")
 
