@@ -129,7 +129,10 @@ func adb_device_ids() ([]string, error) {
 
 	sc := bufio.NewScanner(strings.NewReader(string(stdout)))
 	for sc.Scan() {
-		lines = append(lines, sc.Text())
+		line := strings.TrimSpace(sc.Text())
+		if len(line) != 0 {
+			lines = append(lines, line)
+		}
 	}
 
 	devices_tmp := make([]string, len(lines)-1)
