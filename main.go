@@ -17,4 +17,6 @@ func main() {
 
 	smsconfig.LoadConfig(workingdir)
 
+	fmt.Println(smsconfig.SMSConfiguration.ServerPort)
+
 }

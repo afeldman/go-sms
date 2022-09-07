@@ -1,5 +1,7 @@
 package modem
 
+var GSMModem []interface{}
+
 type GSM interface {
 	Connect() error
 	initModem()

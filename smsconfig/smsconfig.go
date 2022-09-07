@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/afeldman/go-sms/modem"
 	"github.com/spf13/viper"
 )
 
@@ -15,10 +16,10 @@ const (
 )
 
 type SMSDevice struct {
-	DeviceType ModemType `toml:"type"`
-	COMPort    string    `toml:"com" omitempty:"true"`
-	Baudrate   int       `toml:"baud" omitempty:"true"`
-	DeviceId   string    `toml:"id" omitempty:"true"`
+	DeviceType ModemType
+	COMPort    string
+	Baudrate   int
+	DeviceId   string
 }
 
 type SMSConfig struct {
@@ -56,4 +57,21 @@ func LoadConfig(workingdir string) {
 	}
 
 	fmt.Printf("%#v\n", SMSConfiguration)
+
+	for _, device := range SMSConfiguration.Devices {
+		if device.DeviceType == SERIAL {
+			gsm_modem := modem.NewSerialModem(device.COMPort, device.DeviceId, device.Baudrate)
+			modem.GSMModem = append(modem.GSMModem, gsm_modem)
+		}
+		if device.DeviceType == ADB {
+			modem_list, err := modem.ModemList()
+			if err != nil {
+				panic(err.Error())
+			}
+			for _, gms_modem := range modem_list {
+				modem.GSMModem = append(modem.GSMModem, gms_modem)
+			}
+		}
+	}
+
 }
