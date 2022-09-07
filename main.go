@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/afeldman/go-sms/modem"
 	"github.com/afeldman/go-sms/smsconfig"
@@ -26,8 +27,9 @@ func main() {
 		switch v := device.(type) {
 		case modem.GSMADBModem:
 			fmt.Println("ADB device")
-			fmt.Println(v.DeviceId)
-			fmt.Println(v.AndroidVersion)
+			fmt.Println("device id: " + v.DeviceId)
+			fmt.Println("android version: " + strconv.Itoa(v.AndroidVersion))
+
 		case modem.GSMSerialModem:
 			fmt.Println("Serial device")
 			fmt.Println(v.DeviceId)
