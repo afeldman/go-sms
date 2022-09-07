@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
-	"github.com/afeldman/go-sms/modem"
 	"github.com/afeldman/go-sms/smsconfig"
+	"github.com/afeldman/go-sms/smsroutes"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -19,23 +19,18 @@ func main() {
 
 	smsconfig.LoadConfig(workingdir)
 
-	fmt.Println(smsconfig.SMSConfiguration.ServerPort)
+	router := gin.Default()
 
-	fmt.Println(len(modem.GSMModem))
-
-	for _, device := range modem.GSMModem {
-		switch v := device.(type) {
-		case modem.GSMADBModem:
-			fmt.Println("ADB device")
-			fmt.Println("device id: " + v.DeviceId)
-			fmt.Println("android version: " + strconv.Itoa(v.AndroidVersion))
-
-		case modem.GSMSerialModem:
-			fmt.Println("Serial device")
-			fmt.Println(v.DeviceId)
-		default:
-			panic("modem type not found")
+	api := router.Group("/api")
+	{
+		v1 := api.Group("/v1")
+		{
+			v1.POST("/sms", smsroutes.SMSHandler)
 		}
 	}
+
+	router.NoRoute(smsroutes.NoHandler)
+
+	router.Run(smsconfig.SMSConfiguration.ServerAddress + ":" + smsconfig.SMSConfiguration.ServerPort)
 
 }
