@@ -1,4 +1,4 @@
-package gsm
+package modem
 
 import (
 	"errors"
@@ -9,22 +9,26 @@ import (
 	"github.com/tarm/serial"
 )
 
+const (
+	NEWLINE              = "\r\n"
+	ECHOOFF              = "ATE0" + NEWLINE
+	USEFULLERRORMESSAGES = "AT+CMEE=1" + NEWLINE
+	DISABLENOTIFICATIONS = "AT+WIND=0" + NEWLINE
+	ENABLETEXTMODE       = "AT+CMGF=1" + NEWLINE
+)
+
 type GSMSerialModem struct {
-	ComPort      string
-	BaudRate     int
-	Port         *serial.Port
-	DeviceId     string
-	Success      bool
-	Transmission time.Time
+	ComPort  string
+	BaudRate int
+	Port     *serial.Port
+	DeviceId string
 }
 
-func New(ComPort, DeviceId string, BaudRate int) (modem *GSMSerialModem) {
+func NewSerialModem(ComPort, DeviceId string, BaudRate int) (modem *GSMSerialModem) {
 	modem = &GSMSerialModem{
-		ComPort:      ComPort,
-		BaudRate:     BaudRate,
-		DeviceId:     DeviceId,
-		Success:      false,
-		Transmission: time.Unix(0, 0),
+		ComPort:  ComPort,
+		BaudRate: BaudRate,
+		DeviceId: DeviceId,
 	}
 	return modem
 }
@@ -32,11 +36,9 @@ func New(ComPort, DeviceId string, BaudRate int) (modem *GSMSerialModem) {
 func (m *GSMSerialModem) Connect() (err error) {
 	m.Port, err = serial.OpenPort(
 		&serial.Config{
-			Name: 		 m.ComPort,
+			Name:        m.ComPort,
 			Baud:        m.BaudRate,
-			ReadTimeout: time.Second
-		}
-	)
+			ReadTimeout: time.Second})
 
 	if err == nil {
 		m.initModem()
