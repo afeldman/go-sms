@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"log"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -23,8 +24,12 @@ type GSMADBModem struct {
 func ModemList() ([]GSMADBModem, error) {
 	dev := make([]GSMADBModem, 0)
 
+	log.Println("create modem list")
+
 	if !commandExists(adb_program) {
 		return dev, errors.New("adb not found")
+	} else {
+		log.Println("adb found")
 	}
 
 	devices, dev_err := adb_device_ids()
@@ -151,7 +156,14 @@ func adbversion(deviceid string) (int, error) {
 		return -1, versionerr
 	}
 
-	version, err := strconv.Atoi(string(stdout))
+	var version_str string
+
+	s := bufio.NewScanner(strings.NewReader(string(stdout)))
+	for s.Scan() {
+		version_str = s.Text()
+	}
+
+	version, err := strconv.Atoi(version_str)
 	if err != nil {
 		fmt.Println(err.Error())
 		return -1, err
