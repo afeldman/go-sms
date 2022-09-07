@@ -15,13 +15,14 @@ const (
 )
 
 type SMSADBDevice struct {
-	DeviceId string
+	DeviceType ModemType
 }
 
 type SMSSerialDevice struct {
-	COMPort  string
-	Baudrate int
-	DeviceId string
+	DeviceType ModemType
+	COMPort    string
+	Baudrate   int
+	DeviceId   string
 }
 
 type SMSConfig struct {
