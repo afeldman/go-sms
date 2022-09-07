@@ -60,4 +60,8 @@ func LoadConfig(workingdir string) {
 	}
 	fmt.Printf("%#v\n", SMSConfiguration)
 
+	for _, device := range SMSConfiguration.Devices {
+		fmt.Println(device)
+	}
+
 }

@@ -1,4 +1,2 @@
-[Devices]
-
-    [Devices.Mobile]
-    DeviceType = 1
+[[Devices]]
+DeviceType = 1
