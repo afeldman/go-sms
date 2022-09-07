@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/afeldman/go-sms/smsconfig"
 )
 
 func main() {
@@ -12,5 +14,7 @@ func main() {
 	}
 
 	fmt.Println(workingdir)
+
+	smsconfig.LoadConfig(workingdir)
 
 }

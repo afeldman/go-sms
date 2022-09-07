@@ -54,10 +54,9 @@ func LoadConfig(workingdir string) {
 		log.Fatal(err)
 	}
 
-	var cfg SMSConfig
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := viper.Unmarshal(SMSConfig); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%#v\n", cfg)
+	fmt.Printf("%#v\n", SMSConfig)
 
 }
