@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type sms struct {
+type SMSRequest struct {
 	Mobile  string `json:"no"`
 	Message string `json:"msg"`
 }
@@ -20,7 +20,7 @@ type sms_response struct {
 }
 
 func SMSHandler(c *gin.Context) {
-	sms_request := sms{}
+	sms_request := SMSRequest{}
 
 	response := sms_response{
 		Number:  "404",
@@ -34,7 +34,7 @@ func SMSHandler(c *gin.Context) {
 		return
 	}
 
-	log.Println(fmt.Sprintf("sms: %+v", sms_request))
+	log.Printf(fmt.Sprintf("sms: %+v", sms_request) + "\n")
 
 	response.Message = modem.SendSMS(sms_request.Mobile, sms_request.Message)
 	response.Number = sms_request.Mobile
