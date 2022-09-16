@@ -9,6 +9,7 @@ import (
 	"github.com/tarm/serial"
 )
 
+// serial modem constant functions calls
 const (
 	NEWLINE              = "\r\n"
 	ECHOOFF              = "ATE0" + NEWLINE
@@ -17,6 +18,7 @@ const (
 	ENABLETEXTMODE       = "AT+CMGF=1" + NEWLINE
 )
 
+// serial modem
 type GSMSerialModem struct {
 	ComPort  string
 	BaudRate int
@@ -24,6 +26,7 @@ type GSMSerialModem struct {
 	DeviceId string
 }
 
+// new modem object
 func NewSerialModem(ComPort, DeviceId string, BaudRate int) (modem *GSMSerialModem) {
 	modem = &GSMSerialModem{
 		ComPort:  ComPort,
@@ -33,6 +36,7 @@ func NewSerialModem(ComPort, DeviceId string, BaudRate int) (modem *GSMSerialMod
 	return modem
 }
 
+// connect to the modem utilizing the serial port
 func (m *GSMSerialModem) Connect() (err error) {
 	m.Port, err = serial.OpenPort(
 		&serial.Config{
@@ -47,6 +51,7 @@ func (m *GSMSerialModem) Connect() (err error) {
 	return err
 }
 
+// write a message to serial bus
 func (m *GSMSerialModem) Write(message string) {
 	m.Port.Flush()
 	_, err := m.Port.Write([]byte(message))
@@ -55,6 +60,7 @@ func (m *GSMSerialModem) Write(message string) {
 	}
 }
 
+// read a message vom serial
 func (m *GSMSerialModem) Read(message_size int) string {
 	var output string = ""
 	buf := make([]byte, message_size)
@@ -69,6 +75,7 @@ func (m *GSMSerialModem) Read(message_size int) string {
 	return output
 }
 
+// expect output on bus
 func (m *GSMSerialModem) Expect(possibilities []string) (string, error) {
 	readMax := 0
 	for _, possibility := range possibilities {
@@ -100,6 +107,7 @@ func (m *GSMSerialModem) Expect(possibilities []string) (string, error) {
 	return status, errors.New("match not found")
 }
 
+// send message and may wait for a success
 func (m *GSMSerialModem) Send(command string, waitForOk bool) string {
 	m.Write(command)
 
@@ -111,6 +119,7 @@ func (m *GSMSerialModem) Send(command string, waitForOk bool) string {
 	}
 }
 
+// initialize modem
 func (m *GSMSerialModem) initModem() {
 	m.Send(ECHOOFF, true)
 	m.Send(USEFULLERRORMESSAGES, true)
@@ -118,6 +127,7 @@ func (m *GSMSerialModem) initModem() {
 	m.Send(ENABLETEXTMODE, true)
 }
 
+// send a sms
 func (m *GSMSerialModem) SMS(mobileno, message string) string {
 
 	m.Write("AT+CMGS=\"" + mobileno + "\"\r")
