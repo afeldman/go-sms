@@ -9,10 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/** create a sms rest gateway
-*
- */
+// create a sms rest gateway
 func main() {
+
 	// current dir
 	workingdir, err := os.Getwd()
 	if err != nil {
@@ -36,6 +35,7 @@ func main() {
 			v1.POST("/sms", smsroutes.SMSHandler)
 		}
 	}
+
 	// no rout no handler
 	router.NoRoute(smsroutes.NoHandler)
 
